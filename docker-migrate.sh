@@ -105,13 +105,12 @@ set -e
 mkdir -p /tmp/docker-migration
 
 if [ "$AUTO_COMMIT" = "true" ]; then
-    echo "🔄 正在 commit 所有运行中的容器..."
+    echo "🔄 Committing running containers to their original image names..."
     docker ps -q | while read cid; do
-        orig_name=$(docker inspect --format='{{.Name}}' "$cid" | sed 's/^\///')
-        name=$(echo "$orig_name" | tr '[:upper:]' '[:lower:]')
-        image_name="backup/${name}:$(date +%Y%m%d-%H%M%S)"
-        echo "Committing container $orig_name -> $image_name"
-        docker commit "$cid" "$image_name"
+        name=$(docker inspect --format='{{.Name}}' "$cid" | sed 's/^\///')
+        orig_image=$(docker inspect --format='{{.Config.Image}}' "$cid")
+        echo "Committing container $name -> replacing image: $orig_image"
+        docker commit "$cid" "$orig_image"
     done
 fi
 
