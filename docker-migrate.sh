@@ -8,7 +8,7 @@ set -e
 # ======================
 
 OLD_SERVER_USER="ubuntu"
-OLD_SERVER_IP="43.165.190.14"
+OLD_SERVER_IP="1.1.1.1"
 
 # 是否自动生成并部署 SSH 密钥（true/false）
 AUTO_SETUP_SSH_KEY=true
