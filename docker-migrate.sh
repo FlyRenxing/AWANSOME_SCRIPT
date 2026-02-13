@@ -158,7 +158,7 @@ docker load -i "$WORK_DIR/all-images.tar"
 # 8️⃣ 启动服务
 echo "▶️  启动 docker-compose 服务（在 $(dirname "$COMPOSE_FILE")）..."
 cd "$(dirname "$COMPOSE_FILE")"
-docker-compose up -d
+docker compose up -d
 
 # 9️⃣ 清理旧服务器
 echo "🧹 清理旧服务器临时文件..."
