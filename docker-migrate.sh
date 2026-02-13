@@ -8,7 +8,7 @@ set -e
 # ======================
 
 OLD_SERVER_USER="ubuntu"
-OLD_SERVER_IP="1.1.1.1"
+OLD_SERVER_IP="43.133.201.138"
 
 # 是否自动生成并部署 SSH 密钥（true/false）
 AUTO_SETUP_SSH_KEY=true
@@ -114,7 +114,14 @@ if [ "$AUTO_COMMIT" = "true" ]; then
     done
 fi
 
-docker save $(docker images -q) -o /tmp/docker-migration/all-images.tar
+IMAGES=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v "<none>:<none>")
+if [ -n "$IMAGES" ]; then
+  docker save $IMAGES -o /tmp/docker-migration/all-images.tar
+else
+  echo "⚠️  No tagged images found!"
+  exit 1
+fi
+
 echo "✅ 镜像打包完成"
 EOF
 )
