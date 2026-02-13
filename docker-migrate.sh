@@ -89,7 +89,7 @@ mkdir -p /tmp/docker-migration
 if [ "$AUTO_COMMIT" = "true" ]; then
     echo "🔄 正在 commit 所有运行中的容器..."
     docker ps -q | while read cid; do
-        name=$(docker inspect --format='{{.Name}}' "$cid" | sed 's/^\///')
+        name=$(docker inspect --format='{{.Name}}' "$cid" | sed 's/^\///' | tr '[:upper:]' '[:lower:]')
         image_name="backup/${name}:$(date +%Y%m%d-%H%M%S)"
         echo "Committing container $name -> $image_name"
         docker commit "$cid" "$image_name"
